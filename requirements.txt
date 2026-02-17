@@ -10,4 +10,4 @@ whitenoise==6.11.0        # for static files in production
 requests==2.25.1           # if your app uses HTTP requests
 pytz==2022.1
 sqlparse==0.4.2
-Pillow==9.0.1              # if your app uses images
+Pillow==10.1.0              # if your app uses images
