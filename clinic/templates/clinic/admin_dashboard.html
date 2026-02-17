@@ -1,0 +1,37 @@
+{% extends "clinic/base.html" %}
+
+{% block content %}
+  <h2>Admin Dashboard</h2>
+
+  <p>Welcome, {{ user.username }}.</p>
+
+  <ul>
+    <li><strong>Facilities:</strong> {{ facility_count }}</li>
+    <li><strong>Land records:</strong> {{ landrecord_count }}</li>
+    <li><strong>Issues:</strong> {{ issue_count }}</li>
+    
+  </ul>
+
+  <h3>Quick links</h3>
+  <ul>
+    <li><a href="{% url 'clinic:facility_list' %}">Manage facilities</a></li>
+    <li><a href="{% url 'clinic:landrecord_list' %}">Manage land records</a></li>
+    <li><a href="{% url 'clinic:issue_list' %}">Manage issues</a></li>
+    
+  </ul>
+
+  <h3>Recent facilities</h3>
+  {% if recent_facilities %}
+    <ul>
+      {% for f in recent_facilities %}
+        <li>
+          <a href="{% url 'clinic:facility_detail' f.pk %}">{{ f.name }}</a>
+          — {{ f.subcounty }} / {{ f.ward }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No facilities yet.</p>
+  {% endif %}
+{% endblock %}
+

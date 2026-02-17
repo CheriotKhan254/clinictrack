@@ -1,0 +1,129 @@
+{% extends "clinic/base.html" %}
+
+{% block content %}
+
+<h2>Facility: {{ facility.name }}</h2>
+
+<p>
+  <a href="{% url 'clinic:facility_edit' facility.pk %}">Edit facility</a> |
+  <a href="{% url 'clinic:facility_delete' facility.pk %}">Delete facility</a> |
+  <a href="{% url 'clinic:facility_list' %}">Back</a>
+</p>
+
+<hr>
+
+<!-- ================= LOCALITY ================= -->
+<h3>1. Locality</h3>
+
+<p><strong>Location:</strong> {{ facility.location }}</p>
+<p><strong>Subcounty / Ward:</strong> {{ facility.subcounty }} / {{ facility.ward }}</p>
+
+<h4>Edit Locality</h4>
+<form method="post" action="{% url 'clinic:facility_locality_edit' facility.pk %}" novalidate>
+  {% csrf_token %}
+  {% for field in locality_form %}
+    <div class="form-group mb-2">
+      {{ field.label_tag }}
+      {{ field }}
+      {% if field.errors %}<div class="text-danger">{{ field.errors }}</div>{% endif %}
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary mt-2">Save Locality</button>
+</form>
+
+<hr>
+
+<!-- ================= LAND RECORDS ================= -->
+<h3>2. Land Parcels</h3>
+
+{% if facility.land_records.exists %}
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Parcel Number</th>
+      <th>Owner</th>
+      <th>Acreage</th>
+      <th>Ownership Status</th>
+      <th>Document Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for lr in facility.land_records.all %}
+    <tr>
+      <td>{{ lr.parcel_number|default:"—" }}</td>
+      <td>{{ lr.owner|default:"—" }}</td>
+      <td>{{ lr.acreage|default:"—" }}</td>
+      <td>{{ lr.ownership_status|default:"—" }}</td>
+      <td>{{ lr.document_type|default:"—" }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No land parcels captured.</p>
+{% endif %}
+
+<h4>Add New Land Parcel</h4>
+<form method="post" enctype="multipart/form-data"
+      action="{% url 'clinic:facility_land_add' facility.pk %}" novalidate>
+  {% csrf_token %}
+  {% if landrecord_form.non_field_errors %}
+    <div class="alert alert-danger">{{ landrecord_form.non_field_errors }}</div>
+  {% endif %}
+  {% for field in landrecord_form %}
+    <div class="form-group mb-2">
+      {{ field.label_tag }}
+      {{ field }}
+      {% if field.errors %}<div class="text-danger">{{ field.errors }}</div>{% endif %}
+      {% if field.help_text %}<small class="text-muted">{{ field.help_text }}</small>{% endif %}
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-success mt-2">Add Parcel</button>
+</form>
+
+<hr>
+
+<!-- ================= LAND ISSUES ================= -->
+<h3>2b. Land Issues</h3>
+
+<p>
+  <a href="{% url 'clinic:issue_add' facility_pk=facility.pk %}" class="btn btn-primary btn-sm">
+    Add Issue
+  </a>
+</p>
+
+{% if facility.issues.exists %}
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Description</th>
+      <th>Remarks</th>
+      <th>Recommendation</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for issue in facility.issues.all %}
+    <tr>
+      <td>{{ issue.status }}</td>
+      <td>{{ issue.description }}</td>
+      <td>{{ issue.remarks|default:"—" }}</td>
+      <td>{{ issue.recommendation|default:"—" }}</td>
+      <td>
+        <a href="{% url 'clinic:issue_edit' issue.pk %}">Edit</a> |
+        <a href="{% url 'clinic:issue_delete' issue.pk %}">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No land issues recorded.</p>
+{% endif %}
+
+<hr>
+
+
+
+{% endblock %}

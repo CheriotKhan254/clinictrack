@@ -1,0 +1,14 @@
+{% extends "clinic/base.html" %}
+
+{% block content %}
+<h2>Home</h2>
+<p>Welcome to the Clinic Project dashboard.</p>
+<ul>
+  <li>Facilities: {{ facility_count }}</li>
+  <li>Land records: {{ landrecord_count }}</li>
+  <li>Issues: {{ issue_count }}</li>
+</ul>
+<p>
+  <a href="{% url 'clinic:facility_list' %}">Manage Facilities</a>
+</p>
+{% endblock %}

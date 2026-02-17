@@ -1,0 +1,74 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ClinicTrack{% endblock %}</title>
+
+  <!-- Normalize -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-normalize/modern-normalize.css">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <!-- Your stylesheet -->
+  <link rel="stylesheet" href="{% static 'css/mystyle.css' %}">
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="header-inner">
+      <h1>Clinic<span>Track</span></h1>
+
+      <nav>
+        <a href="{% url 'clinic:home' %}">Home</a>
+
+        {% if user.is_authenticated and user.is_staff %}
+          <a href="{% url 'clinic:admin_dashboard' %}">Dashboard</a>
+          <a href="{% url 'clinic:facility_list' %}">Facilities</a>
+          <a href="{% url 'clinic:landrecord_list' %}">Land Records</a>
+          <a href="{% url 'clinic:issue_list' %}">Issues</a>
+         
+          <a href="{% url 'clinic:logout' %}">Logout</a>
+        {% else %}
+          <a href="{% url 'clinic:login' %}">Login</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== DJANGO MESSAGES ===== -->
+  {% if messages %}
+    <div class="messages-wrapper">
+      {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags == 'success' %}alert-success{% elif message.tags == 'warning' %}alert-warning{% else %}alert-success{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <div class="container">
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <span>ClinicTrack &copy; {% now "Y" %} — County Health Records System</span>
+    {% if user.is_authenticated %}
+      <span style="margin-left:16px;color:#334155;">Logged in as <strong style="color:#94a3b8;">{{ user.username }}</strong></span>
+    {% endif %}
+  </footer>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

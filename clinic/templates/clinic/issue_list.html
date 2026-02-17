@@ -1,0 +1,49 @@
+{% extends "clinic/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3>All Land Issues</h3>
+
+    <p>
+        <a href="{% url 'clinic:facility_list' %}" class="btn btn-primary btn-sm">
+            Add Issue (select a facility first)
+        </a>
+    </p>
+
+    {% if issues %}
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="thead-dark">
+            <tr>
+                <th>Facility</th>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Remarks</th>
+                <th>Recommendation</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for issue in issues %}
+            <tr>
+                <td>
+                    <a href="{% url 'clinic:facility_detail' issue.facility.pk %}">
+                        {{ issue.facility.name }}
+                    </a>
+                </td>
+                <td>{{ issue.status }}</td>
+                <td>{{ issue.description }}</td>
+                <td>{{ issue.remarks|default:"—" }}</td>
+                <td>{{ issue.recommendation|default:"—" }}</td>
+                <td>
+                    <a href="{% url 'clinic:issue_edit' issue.pk %}">Edit</a> |
+                    <a href="{% url 'clinic:issue_delete' issue.pk %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No issues recorded.</p>
+    {% endif %}
+</div>
+{% endblock %}
