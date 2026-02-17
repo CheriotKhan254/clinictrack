@@ -1,13 +1,14 @@
 Django==5.2.7
 gunicorn==25.1.0
-mysqlclient==2.1.1        # remove if using PostgreSQL
-psycopg2-binary==2.9.11   # remove if using MySQL
+mysqlclient==2.1.1
+psycopg2-binary==2.9.11
 asgiref==3.10.0
 bcrypt==3.2.0
 blinker==1.4.0
-python-dotenv==1.2.1      # if using environment variables
-whitenoise==6.11.0        # for static files in production
-requests==2.25.1           # if your app uses HTTP requests
+python-dotenv==1.2.1
+whitenoise==6.11.0
+requests==2.25.1
 pytz==2022.1
 sqlparse==0.4.2
-Pillow==10.1.0              # if your app uses images
+Pillow>=10.0
+
