@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-a$ya44rx4#$qtl65o6e-7qgk4efjz%-jn-pk5w1#l*_hbeki2_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [".railway.app"]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.railway.app",
+]
 
 
 # Application definition
@@ -136,6 +140,6 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-CSRF_TRUSTED_ORIGINS = ['https://web-production-fa467.up.railway.app']
+# CSRF_TRUSTED_ORIGINS = ['https://web-production-fa467.up.railway.app']
 
 
