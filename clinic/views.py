@@ -144,21 +144,24 @@ class FacilityDeleteView(AdminRequiredMixin, generic.DeleteView):
 class LandRecordListView(AdminRequiredMixin, generic.ListView):
     model = LandRecord
     template_name = "clinic/landrecord_list.html"
-    context_object_name = "landrecords"
-    # paginate_by = 10  # optional
 
     def get_queryset(self):
         queryset = super().get_queryset()
 
-        search = self.request.GET.get("search")
+        facility_search = self.request.GET.get("search")
+        parcel_search = self.request.GET.get("parcel")
 
-        if search:
+        if facility_search:
             queryset = queryset.filter(
-                facility__name__icontains=search
+                facility__name__icontains=facility_search
+            )
+
+        if parcel_search:
+            queryset = queryset.filter(
+                parcel_number__icontains=parcel_search
             )
 
         return queryset
-
 
 
 class LandRecordDetailView(AdminRequiredMixin, generic.DetailView):
